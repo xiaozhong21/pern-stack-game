@@ -3,10 +3,34 @@ import pgp from "pg-promise";
 
 const db = initDb();
 
-export const getTasks = () => db.any("SELECT * FROM tasks");
+export const getPlayers = () => db.any("SELECT * FROM players");
 
-export const addTask = (name) =>
-  db.one("INSERT INTO tasks(name) VALUES(${name}) RETURNING *", { name });
+export const addPlayer = (name) =>
+  db.one(
+    "INSERT INTO players(name, wins, losses, ties) VALUES($1, $2, $3, $4) RETURNING *",
+    [name, 0, 0, 0],
+  );
+
+export const deletePlayer = (id) =>
+  db.none("DELETE FROM players WHERE id = ${id}", { id });
+
+export const updateWin = (name) =>
+  db.one(
+    "UPDATE players SET wins = wins + 1 WHERE name = ${name} RETURNING *",
+    { name },
+  );
+
+export const updateLoss = (name) =>
+  db.one(
+    "UPDATE players SET losses = losses + 1 WHERE name = ${name} RETURNING *",
+    { name },
+  );
+
+export const updateTie = (name) =>
+  db.one(
+    "UPDATE players SET ties = ties + 1 WHERE name = ${name} RETURNING *",
+    { name },
+  );
 
 function initDb() {
   let connection;
