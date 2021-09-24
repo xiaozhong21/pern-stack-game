@@ -30,14 +30,11 @@ const Game = () => {
     const timeInHistory = history.slice(0, stepNumber + 1);
     const current = timeInHistory[stepNumber];
     const squares = [...current];
-    //If user clicks an occupied square or if game is won, return
     if (winner || squares[i]) return;
-    //Put an X or an O in the clicked square
     squares[i] = xIsNext ? "X" : "O";
     setHistory([...timeInHistory, squares]);
     setStepNumber(timeInHistory.length);
     setXisNext(!xIsNext);
-    console.log(history.length);
   };
 
   const jumpTo = (step) => {
