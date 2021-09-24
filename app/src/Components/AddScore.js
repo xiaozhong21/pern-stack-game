@@ -69,9 +69,13 @@ const AddScore = ({
         </label>
         <br />
         <br />
-        <button disabled={disabledButton}>Submit</button>
+        <button className="buttons2" disabled={disabledButton}>
+          Submit
+        </button>
       </form>
-      <button onClick={() => window.location.reload()}>Reset Game</button>
+      <button className="buttons2" onClick={() => window.location.reload()}>
+        Reset Game
+      </button>
     </>
   );
 };

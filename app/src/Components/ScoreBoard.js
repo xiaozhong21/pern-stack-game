@@ -1,9 +1,21 @@
 import * as React from "react";
 
-const ScoreBoard = ({ players, deletePlayer }) => {
+const ScoreBoard = ({ players, loadPlayers, deletePlayer, loadTopPlayers }) => {
+  const [showAllScores, setShowAllScores] = React.useState(true);
+
+  const handleScoreReportClick = () => {
+    showAllScores ? loadTopPlayers() : loadPlayers();
+    setShowAllScores(!showAllScores);
+  };
+
   return (
     <>
       <h1>Score Board</h1>
+      <button className="buttons2" onClick={handleScoreReportClick}>
+        {showAllScores
+          ? "Click to See Top 5 Ranked"
+          : "Click to See All Players"}
+      </button>
       <table>
         <thead>
           <tr>
@@ -21,7 +33,9 @@ const ScoreBoard = ({ players, deletePlayer }) => {
               <td>{losses}</td>
               <td>{ties}</td>
               <td>
-                <button onClick={() => deletePlayer(id)}>Delete</button>
+                <button className="buttons" onClick={() => deletePlayer(id)}>
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

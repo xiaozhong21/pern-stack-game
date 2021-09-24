@@ -1,5 +1,7 @@
 export const getPlayers = () => _get("/api/players");
 
+export const getTopPlayers = () => _get("/api/players/top");
+
 export const addPlayer = ({ name }) => _post("/api/players", { name });
 
 export const deletePlayer = (id) => _delete(`/api/players/${id}`);

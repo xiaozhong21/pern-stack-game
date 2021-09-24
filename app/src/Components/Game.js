@@ -9,15 +9,24 @@ import ScoreBoard from "./ScoreBoard";
 import "./Game.scss";
 
 const Game = () => {
-  const { players, addPlayer, deletePlayer, updateWin, updateLoss, updateTie } =
-    usePlayers();
+  const {
+    players,
+    loadPlayers,
+    loadTopPlayers,
+    addPlayer,
+    deletePlayer,
+    updateWin,
+    updateLoss,
+    updateTie,
+  } = usePlayers();
   const [history, setHistory] = React.useState([Array(9).fill(null)]);
   const [stepNumber, setStepNumber] = React.useState(0);
   const [xIsNext, setXisNext] = React.useState(true);
+  const [showScore, setShowScore] = React.useState(false);
 
   const winner = calculateWinner(history[stepNumber]);
 
-  const handleClick = (i) => {
+  const handleGameBoardClick = (i) => {
     const timeInHistory = history.slice(0, stepNumber + 1);
     const current = timeInHistory[stepNumber];
     const squares = [...current];
@@ -31,10 +40,10 @@ const Game = () => {
     console.log(history.length);
   };
 
-  function jumpTo(step) {
+  const jumpTo = (step) => {
     setStepNumber(step);
     setXisNext(step % 2 === 0);
-  }
+  };
 
   const renderMoves = () =>
     history.map((_step, move) => {
@@ -50,8 +59,15 @@ const Game = () => {
 
   return (
     <>
-      <ScoreBoard {...{ players, deletePlayer }} />
-      <Board squares={history[stepNumber]} onClick={handleClick} />
+      <button className="buttons" onClick={() => setShowScore(!showScore)}>
+        {showScore ? "Hide Leaderboard" : "Leaderboard"}
+      </button>
+      {showScore && (
+        <ScoreBoard
+          {...{ players, loadPlayers, deletePlayer, loadTopPlayers }}
+        />
+      )}
+      <Board squares={history[stepNumber]} onClick={handleGameBoardClick} />
       <div className="text">
         <p>
           {winner
@@ -84,6 +100,7 @@ const usePlayers = () => {
   const [players, setPlayers] = React.useState([]);
 
   const loadPlayers = () => apiClient.getPlayers().then(setPlayers);
+  const loadTopPlayers = () => apiClient.getTopPlayers().then(setPlayers);
   const deletePlayer = (id) => apiClient.deletePlayer(id).then(loadPlayers);
   const addPlayer = ({ name }) =>
     apiClient.addPlayer({ name }).then(loadPlayers);
@@ -95,7 +112,16 @@ const usePlayers = () => {
     loadPlayers();
   }, []);
 
-  return { players, addPlayer, deletePlayer, updateWin, updateLoss, updateTie };
+  return {
+    players,
+    loadPlayers,
+    loadTopPlayers,
+    addPlayer,
+    deletePlayer,
+    updateWin,
+    updateLoss,
+    updateTie,
+  };
 };
 
 export default Game;

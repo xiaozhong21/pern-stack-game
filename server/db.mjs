@@ -3,7 +3,13 @@ import pgp from "pg-promise";
 
 const db = initDb();
 
-export const getPlayers = () => db.any("SELECT * FROM players");
+export const getPlayers = () =>
+  db.any("SELECT * FROM players ORDER BY wins DESC");
+
+export const getTopPlayers = () =>
+  db.any(
+    "SELECT * FROM players ORDER BY wins DESC FETCH NEXT 5 ROWS WITH TIES",
+  );
 
 export const addPlayer = (name) =>
   db.one(

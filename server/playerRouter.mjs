@@ -5,8 +5,11 @@ import * as db from "./db.mjs";
 const playerRouter = express.Router();
 
 playerRouter.get("/", async (request, response) => {
-  const players = await db.getPlayers();
-  response.json(players);
+  response.json(await db.getPlayers());
+});
+
+playerRouter.get("/top", async (request, response) => {
+  response.json(await db.getTopPlayers());
 });
 
 playerRouter.use(express.json());
