@@ -2,7 +2,7 @@ import * as React from "react";
 
 import { Routes, Route, Link } from "react-router-dom";
 
-import Tasks from "./Tasks";
+import Game from "./Components/Game";
 
 const App = () => (
   <main>
@@ -20,7 +20,7 @@ const Home = () => (
   <>
     <h1>{process.env.REACT_APP_TITLE}</h1>
     <h2>{process.env.REACT_APP_SUBTITLE}</h2>
-    <Tasks />
+    <Game />
   </>
 );
 
